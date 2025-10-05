@@ -89,8 +89,19 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
+        NumberTriangle current = this;
+
+        for (int i = 0; i < path.length(); i++) {
+            char direction = path.charAt(i);
+
+            if (direction == ('r')) {
+                current = current.right;
+            } else if (direction == ('l')) {
+                current = current.left;
+            }
+
+        }
+        return current.getRoot();
     }
 
     /** Read in the NumberTriangle structure from a file.
@@ -110,22 +121,23 @@ public class NumberTriangle {
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-        ArrayList<NumberTriangle> prevrow = new ArrayList<NumberTriangle>();
+        ArrayList<NumberTriangle> prevrow = new ArrayList<>();
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
         NumberTriangle top = null;
 
         String line = br.readLine();
+
         while (line != null) {
-            String[] parts  = line.split("\\s+");
-            ArrayList<NumberTriangle> currrow = new  ArrayList<NumberTriangle>();
+            String[] parts  = line.trim().split("\\s+");
+            ArrayList<NumberTriangle> currrow = new  ArrayList<>();
 
             for (String part : parts) {
                 currrow.add(new NumberTriangle(Integer.parseInt(part)));
             }
 
-            if (prevrow.size() == 0) {
+            if (prevrow.size() != 0) {
                 for (int i = 0; i < prevrow.size(); i++) {
                     prevrow.get(i).setLeft(currrow.get(i));
                     prevrow.get(i).setRight(currrow.get(i + 1));
